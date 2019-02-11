@@ -1,6 +1,6 @@
 # FCND - 3D Motion Planning
 
-#### Explain the Starter Code
+### Explain the Starter Code
 1. In motion_planning.py, Planning state is added between arming and takeoff. 
 2. In backyard_flyer the plan was to move in predfined box. In the motion_planning.py, the plan_path function is invoked during planning state for generating waypoints.
 3. plan_path function:
@@ -11,6 +11,7 @@
 6. planning_util.py has 2 functions:
 	create_grid(): which takes the data and generates the grid. 
 	a_star(): Used for planning path from start to goal state with 4 actions, N, E, W, S
+
 ### Implementing Your Path Planning Algorithm
 
 #### 1. Set your global home position
