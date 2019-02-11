@@ -83,7 +83,8 @@ For this step you can use a collinearity test or ray tracing method like Bresenh
 	Path length with or without pruning:
 		Path length: 207
 		Pruned path length: 26
-	![With Pruning](./misc/with_pruning.png) 
+
+![With Pruning](./misc/with_pruning.png) 
 
 ### Execute the flight
 #### 1. Does it work?
