@@ -17,35 +17,33 @@
 #### 1. Set your global home position
 Here students should read the first line of the csv file, extract lat0 and lon0 as floating point values and use the self.set_home_position() method to set global home. Explain briefly how you accomplished this in your code.
 
-        with open('colliders.csv') as f:
-            first_line = f.readline().strip().split(',')
-    
-        lat0 = float(first_line[0].strip().split(' ')[1])
-        lon0 = float(first_line[1].strip().split(' ')[1])
-        
-        # TODO: set home position to (lon0, lat0, 0)
-        self.set_home_position(lon0, lat0, 0.0)
+		with open('colliders.csv') as f:
+			first_line = f.readline().strip().split(',')
+		
+		lat0 = float(first_line[0].strip().split(' ')[1])
+		lon0 = float(first_line[1].strip().split(' ')[1])
+		
+		# TODO: set home position to (lon0, lat0, 0)
+		self.set_home_position(lon0, lat0, 0.0)
 
 #### 2. Set your current local position
 Here as long as you successfully determine your local position relative to global home you'll be all set. Explain briefly how you accomplished this in your code.
 	
 		curr_global = [self._longitude, self._latitude, self._altitude]
-	    (self.local_position[0], self.local_position[1], self.local_position[2]) = global_to_local(curr_global, self.global_home)
+		(self.local_position[0], self.local_position[1], self.local_position[2]) = global_to_local(curr_global, self.global_home)
 
 #### 3. Set grid start position from local position
 This is another step in adding flexibility to the start location. As long as it works you're good to go!
 	
 		grid_start = (int(np.floor(self.local_position[0]))-north_offset, int(np.floor(self.local_position[1]))-east_offset)
-   
 
 #### 4. Set grid goal position from geodetic coords
 This step is to add flexibility to the desired goal location. Should be able to choose any (lat, lon) within the map and have it rendered to a goal location on the grid.
 
 		goal_lat = 37.794333
-        goal_long = -122.396231
-        
-        target_position = global_to_local([goal_long, goal_lat, 0.0 ], self.global_home)
-        grid_goal = (int(np.floor(target_position[0]))-north_offset, int(np.floor(target_position[1]))-east_offset)
+		goal_long = -122.396231
+		target_position = global_to_local([goal_long, goal_lat, 0.0 ], self.global_home)
+		grid_goal = (int(np.floor(target_position[0]))-north_offset, int(np.floor(target_position[1]))-east_offset)
 
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
@@ -53,21 +51,23 @@ Minimal requirement here is to modify the code in planning_utils() to update the
 
 To achieve above,
 
-	1. following actions were added
+	1. following actions were added:
+		
 		NW = (-1,-1, np.sqrt(2))
-	   	NE = (-1, 1, np.sqrt(2))
-	    SW = (1, -1, np.sqrt(2))
-	    SE = (1, 1, np.sqrt(2))
-
-	2. Following conditions were added to remove invalid actions
+		NE = (-1, 1, np.sqrt(2))
+		SW = (1, -1, np.sqrt(2))
+		SE = (1, 1, np.sqrt(2))
+		
+	2. Following conditions were added to remove invalid actions:
+		
 		if x - 1 < 0 or  y - 1 < 0  or grid[x-1, y-1] == 1:
-	        valid_actions.remove(Action.NW)
-	    if x - 1 < 0 or  y + 1 > m or grid[x-1, y+1] == 1:
-	        valid_actions.remove(Action.NE)
-	    if x + 1 > n or  y - 1 < 0 or grid[x+1, y-1] == 1:
-	        valid_actions.remove(Action.SW)
-	    if x + 1 > n or  y + 1 > m or grid[x+1, y+1] == 1:
-	        valid_actions.remove(Action.SE)
+			valid_actions.remove(Action.NW)
+		if x - 1 < 0 or  y + 1 > m or grid[x-1, y+1] == 1:
+			valid_actions.remove(Action.NE)
+		if x + 1 > n or  y - 1 < 0 or grid[x+1, y-1] == 1:
+		    valid_actions.remove(Action.SW)
+		if x + 1 > n or  y + 1 > m or grid[x+1, y+1] == 1:
+		    valid_actions.remove(Action.SE)
 
 
 #### 6. Cull waypoints 
